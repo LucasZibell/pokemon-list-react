@@ -2,14 +2,17 @@ import Modal from 'react-modal';
 import { useEffect, useState } from 'react';
 import styles from './styles.module.scss';
 
-import { getPokemon, getPokemonDetails } from '../../services/pokemon';
+import modalStyle from './modalStyle';
+
+import { getPokemon } from '../../services/pokemon';
 
 import PokemonCard from '../../components/PokemonCard';
+import PokemonDetails from '../../components/PokemonDetails';
 
 function PokemonList() {
   const [pokemon, setPokemon] = useState([]);
   const [isModalOpen, setModalStatus] = useState(false);
-  const [pokemonDetails, setPokemonDetails] = useState({});
+  const [pokemonId, setPokemonId] = useState();
 
   useEffect(() => {
     getPokemon().then(({ data }) => setPokemon(data.results));
@@ -17,8 +20,7 @@ function PokemonList() {
 
   const handlePokemonSelection = (id) => {
     setModalStatus(true);
-    setPokemonDetails(id);
-    getPokemonDetails(id);
+    setPokemonId(id);
   };
 
   const closeModal = () => setModalStatus(false);
@@ -37,11 +39,12 @@ function PokemonList() {
           ))}
         </div>
       </div>
-      <Modal isOpen={isModalOpen}>
-        <span>{pokemonDetails}</span>
-        <button onClick={closeModal} type="button">
-          Cerrar Modal
-        </button>
+      <Modal
+        isOpen={isModalOpen}
+        style={modalStyle}
+        onRequestClose={closeModal}
+        shouldCloseOnOverlayClick>
+        <PokemonDetails id={pokemonId} onCloseModal={closeModal} />
       </Modal>
     </>
   );

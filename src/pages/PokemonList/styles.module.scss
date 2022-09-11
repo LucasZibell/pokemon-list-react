@@ -1,0 +1,23 @@
+@import '../../styles/colors';
+
+.listContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.pokemonTitle {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: $seashell;
+}
+
+.listGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 200px);
+  column-gap: 10px;
+  row-gap: 20px;
+}
+
+.pokemonName {
+  color: $seashell;
+}

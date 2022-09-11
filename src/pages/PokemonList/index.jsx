@@ -17,7 +17,6 @@ function PokemonList() {
 
   const handlePokemonSelection = (id) => {
     setModalStatus(true);
-    console.log(id);
     setPokemonDetails(id);
     getPokemonDetails(id);
   };

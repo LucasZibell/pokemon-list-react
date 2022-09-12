@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import Modal from 'react-modal';
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import styles from './styles.module.scss';
 
 import modalStyle from './modalStyle';
@@ -10,13 +11,12 @@ import PokemonCard from '../../components/PokemonCard';
 import PokemonDetails from '../../components/PokemonDetails';
 
 function PokemonList() {
-  const [pokemon, setPokemon] = useState([]);
   const [isModalOpen, setModalStatus] = useState(false);
   const [pokemonId, setPokemonId] = useState();
 
-  useEffect(() => {
-    getPokemon().then(({ data }) => setPokemon(data.results));
-  }, []);
+  const { data: pokemon } = useQuery(['get-pokemon-list'], getPokemon, {
+    select: ({ data }) => data.results
+  });
 
   const handlePokemonSelection = (id) => {
     setModalStatus(true);
@@ -30,8 +30,9 @@ function PokemonList() {
       <div className={styles.listContainer}>
         <h1 className={styles.pokemonTitle}>Listado de Pokemon</h1>
         <div className={styles.listGrid}>
-          {pokemon.map((poke) => (
+          {pokemon?.map((poke) => (
             <PokemonCard
+              key={poke.name}
               name={poke.name}
               pokemonUrl={poke.url}
               onPokemonSelection={handlePokemonSelection}
